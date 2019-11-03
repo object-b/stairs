@@ -15,7 +15,8 @@ export default function HomeScreen() {
     <View style={styles.container}>
       <ScrollView
         style={styles.container}
-        contentContainerStyle={styles.contentContainer}>
+        contentContainerStyle={styles.contentContainer}
+      >
         <View style={styles.welcomeContainer}>
           <Image
             source={
@@ -39,19 +40,10 @@ export default function HomeScreen() {
 
         <View style={styles.helpContainer}>
           <TouchableOpacity onPress={handleHelpPress} style={styles.helpLink}>
-            <Text style={styles.helpLinkText}>
-              Help, it didn’t automatically reload!
-            </Text>
+            <Text style={styles.helpLinkText}>Help, it didn’t automatically reload!</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
-
-      <View style={styles.tabBarInfoContainer}>
-        <Text style={styles.tabBarInfoText}>
-          This is a tab bar. You can edit it in:
-        </Text>
-
-      </View>
     </View>
   );
 }
@@ -70,8 +62,8 @@ function DevelopmentModeNotice() {
 
     return (
       <Text style={styles.developmentModeText}>
-        Development mode is enabled: your app will be slower but you can use
-        useful development tools. {learnMoreButton}
+        Development mode is enabled: your app will be slower but you can use useful
+        development tools. {learnMoreButton}
       </Text>
     );
   } else {

@@ -4,8 +4,8 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+import RatingScreen from '../screens/RatingScreen';
+import ProfileScreen from '../screens/ProfileScreen';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -20,7 +20,7 @@ const HomeStack = createStackNavigator(
 );
 
 HomeStack.navigationOptions = {
-  tabBarLabel: 'Home',
+  tabBarLabel: 'Главная',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -37,13 +37,13 @@ HomeStack.path = '';
 
 const LinksStack = createStackNavigator(
   {
-    Links: LinksScreen,
+    Links: RatingScreen,
   },
   config
 );
 
 LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
+  tabBarLabel: 'Рейтинг',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'} />
   ),
@@ -51,26 +51,26 @@ LinksStack.navigationOptions = {
 
 LinksStack.path = '';
 
-const SettingsStack = createStackNavigator(
+const ProfileStack = createStackNavigator(
   {
-    Settings: SettingsScreen,
+    Settings: ProfileScreen,
   },
   config
 );
 
-SettingsStack.navigationOptions = {
-  tabBarLabel: 'Settings',
+ProfileStack.navigationOptions = {
+  tabBarLabel: 'Профиль',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'} />
   ),
 };
 
-SettingsStack.path = '';
+ProfileStack.path = '';
 
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
   LinksStack,
-  SettingsStack,
+  ProfileStack,
 });
 
 tabNavigator.path = '';
