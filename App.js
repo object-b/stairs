@@ -1,69 +1,58 @@
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 import React, { useState } from 'react';
-import {
-  Platform,
-  StatusBar,
-  StyleSheet,
-  View,
-  TextInput,
-  Text,
-  Button,
-  ScrollView,
-} from 'react-native';
+import { Platform, StatusBar, StyleSheet, View, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { AsyncStorage } from 'react-native';
 import Constants from 'expo-constants';
 import AppNavigator from './navigation/AppNavigator';
 import AppIntroSlider from 'react-native-app-intro-slider';
-import RadioButton from './components/RadioButton';
+import { mapping, light as lightTheme } from '@eva-design/eva';
+import {
+  ApplicationProvider,
+  Layout,
+  Input,
+  TopNavigation,
+  Radio,
+  Button,
+  Text,
+  RadioGroup,
+} from 'react-native-ui-kitten';
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
   const [isOnboardingDone, setOnboardingDone] = useState(false);
   const [isProfileCreated, setProfileCreated] = useState(false);
   const [userNameValue, onChangeUserName] = useState('');
-  const [userGenderValue, onChangeUserGender] = useState('male');
+  const [userGenderValue, onChangeUserGender] = useState(0);
+  const [userAgeValue, onChangeUserAge] = useState(2);
+  const [userCityValue, onChangeUserCity] = useState('Город');
 
   const slides = [
     {
       key: 'why',
       title: 'Зачем приложение',
-      text: 'Да просто так.',
-      image: require('./assets/images/icon.png'),
-      backgroundColor: '#59b2ab',
-      titleStyle: styles.title,
+      text:
+        'Commodo officia laboris sit aute est labore.\nPariatur veniam et ipsum incididunt commodo.',
+      image: require('./assets/images/robot-dev.png'),
+      backgroundColor: '#8fb2ab',
+      titleStyle: styles.tutorialTitle,
     },
     {
       key: 'ad',
       title: 'Реклама чемпионата',
       text: 'Два пенсионера пойдут бегать.\nПриложение вызовет скорую.',
-      image: require('./assets/images/icon.png'),
-      backgroundColor: '#febe29',
-      titleStyle: styles.title,
+      image: require('./assets/images/robot-dev.png'),
+      backgroundColor: '#deae29',
+      titleStyle: styles.tutorialTitle,
     },
     {
       key: 'geo',
       title: 'Важность геолокации',
       text: 'Мы будем отслеживать тебя.\nТвой дом и твою собаку.',
-      image: require('./assets/images/icon.png'),
-      backgroundColor: '#22bcb5',
-      titleStyle: styles.title,
-    },
-  ];
-
-  const genders = [
-    {
-      key: 'male',
-      text: 'Мужчина',
-    },
-    {
-      key: 'female',
-      text: 'Женщина',
-    },
-    {
-      key: 'special',
-      text: 'Особый',
+      image: require('./assets/images/robot-dev.png'),
+      backgroundColor: '#12bcb5',
+      titleStyle: styles.tutorialTitle,
     },
   ];
 
@@ -99,30 +88,65 @@ export default function App(props) {
 
     if (!isProfileCreated) {
       return (
-        <ScrollView style={styles.profileContainer}>
-          <View>
-            <Text style={styles.profileTitle}>Познакомимся?</Text>
-            <Text style={styles.profileSubtitle}>
-              Расскажи о себе чуток больше, а там решим
-            </Text>
+        <ApplicationProvider mapping={mapping} theme={lightTheme}>
+          <ScrollView>
+            <Layout style={styles.profileContainer}>
+              <TopNavigation
+                title="Привет! Создадим профиль?"
+                alignment="center"
+                titleStyle={styles.profileTopNavigationTitle}
+              />
 
-            <TextInput
-              style={styles.profileTextInput}
-              onChangeText={text => onChangeUserName(text)}
-              value={userNameValue}
-              placeholder="Имя пользователя (никнейм)"
-              underlineColorAndroid="#d3d3d3"
-            />
+              <Input
+                label="Введи свой никнейм"
+                style={styles.profileTextInput}
+                value={userNameValue}
+                onChangeText={text => onChangeUserName(text)}
+                placeholder="runner_73"
+              />
 
-            <RadioButton
-              options={genders}
-              default={userGenderValue}
-              onChangeButton={value => onChangeUserGender(value)}
-            />
+              <Input
+                label="Введи свой город"
+                value={userCityValue}
+                onChangeText={text => onChangeUserCity(text)}
+                placeholder="Ульяновск"
+              />
 
-            <Button onPress={handlePressCreateProfile} title="Создать профиль как бы" />
-          </View>
-        </ScrollView>
+              <Text appearance="hint" style={styles.profileTextLabel}>
+                Выбери свой пол
+              </Text>
+              <RadioGroup
+                style={styles.profileRadioGroup}
+                selectedIndex={userGenderValue}
+                onChange={onChangeUserGender}
+              >
+                <Radio style={styles.profileRadio} text="Мужчина" />
+                <Radio style={styles.profileRadio} text="Женщина" />
+                <Radio style={styles.profileRadio} text="У меня особый" />
+              </RadioGroup>
+
+              <Text appearance="hint" style={styles.profileTextLabel}>
+                Выбери свой возраст
+              </Text>
+              <RadioGroup
+                style={styles.profileRadioGroup}
+                selectedIndex={userAgeValue}
+                onChange={onChangeUserAge}
+              >
+                <Radio style={styles.profileRadio} text="До 14" />
+                <Radio style={styles.profileRadio} text="14-18" />
+                <Radio style={styles.profileRadio} text="18-30" />
+                <Radio style={styles.profileRadio} text="30-45" />
+                <Radio style={styles.profileRadio} text="45-60" />
+                <Radio style={styles.profileRadio} text="60+" />
+              </RadioGroup>
+
+              <Button style={styles.profileButton} onPress={handlePressCreateProfile}>
+                Завершить
+              </Button>
+            </Layout>
+          </ScrollView>
+        </ApplicationProvider>
       );
     }
   }
@@ -130,7 +154,16 @@ export default function App(props) {
   function handlePressCreateProfile() {
     // setProfileCreated(true);
 
-    console.log(userNameValue, userGenderValue);
+    console.log(
+      'user name - ' +
+        userNameValue +
+        ' user gender - ' +
+        userGenderValue +
+        ' user age - ' +
+        userAgeValue +
+        ' user city - ' +
+        userCityValue
+    );
   }
 
   async function handleFinishOnboarding() {
@@ -220,31 +253,36 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  title: {
+  tutorialTitle: {
     textAlign: 'center',
     fontWeight: '400',
     marginTop: 16,
+    color: 'rgba(255, 255, 255, .9)',
   },
 
-  profileTitle: {
-    textAlign: 'center',
-    fontWeight: '300',
-    fontSize: 26,
-    marginTop: 16,
-    marginBottom: 13,
+  profileButton: {
+    marginVertical: 15,
   },
-  profileSubtitle: {
-    textAlign: 'center',
-    marginBottom: 13,
-  },
-  profileContainer: {
-    flex: 1,
-    marginTop: Constants.statusBarHeight,
-    marginHorizontal: 16,
+  profileTopNavigationTitle: {
+    fontSize: 22,
+    marginTop: 20,
+    marginBottom: 25,
+    backgroundColor: '#fff',
   },
   profileTextInput: {
-    height: 40,
-    paddingLeft: 6,
-    marginBottom: 15,
+    marginBottom: 7,
+  },
+  profileTextLabel: {
+    fontSize: 14,
+    marginTop: 10,
+    marginBottom: 4,
+  },
+  profileContainer: {
+    marginTop: Constants.statusBarHeight + 10,
+    paddingHorizontal: 20,
+    flex: 1,
+  },
+  profileRadio: {
+    marginVertical: 4,
   },
 });

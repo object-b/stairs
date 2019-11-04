@@ -15,11 +15,12 @@ export default class RadioButtons extends Component {
   };
 
   render() {
-    const { options } = this.props;
+    const { options, label } = this.props;
     const { value } = this.state;
 
     return (
-      <View>
+      <View style={styles.mainContainer}>
+        <Text style={styles.textLabelStyle}>{label}</Text>
         {options.map(item => {
           return (
             <View key={item.key}>
@@ -28,7 +29,7 @@ export default class RadioButtons extends Component {
                 onPress={() => this.handleOnPress(item.key)}
               >
                 <View style={styles.buttonContainer}>
-                  <Text>{item.text}</Text>
+                  <Text style={styles.textStyle}>{item.text}</Text>
                   <View style={styles.circle}>
                     {value === item.key && <View style={styles.checkedCircle} />}
                   </View>
@@ -47,10 +48,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 15,
-    marginHorizontal: 5,
+    marginBottom: 7,
   },
-
+  mainContainer: {
+    // marginHorizontal: 10,
+    marginTop: 13,
+  },
+  textStyle: {
+    fontSize: 16,
+  },
+  textLabelStyle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#86939e',
+    marginBottom: 7,
+  },
   circle: {
     height: 20,
     width: 20,
@@ -60,7 +72,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-
   checkedCircle: {
     width: 14,
     height: 14,
