@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { AsyncStorage } from 'react-native';
 
 export default function HomeScreen() {
   return (
@@ -31,6 +32,8 @@ export default function HomeScreen() {
         <View style={styles.getStartedContainer}>
           <DevelopmentModeNotice />
 
+          <TestData />
+
           <Text style={styles.getStartedText}>Get started by opening</Text>
 
           <Text style={styles.getStartedText}>
@@ -51,6 +54,14 @@ export default function HomeScreen() {
 HomeScreen.navigationOptions = {
   header: null,
 };
+
+function TestData() {
+  AsyncStorage.getItem('userData').then(value => {
+    console.log(value);
+  });
+
+  return <Text>123</Text>;
+}
 
 function DevelopmentModeNotice() {
   if (__DEV__) {
